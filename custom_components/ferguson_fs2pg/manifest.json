@@ -1,0 +1,14 @@
+{
+  "domain": "ferguson_fs2pg",
+  "name": "Ferguson FS2PG (local)",
+  "categories": ["plugs_switches", "energy.meters_monitoring"],
+  "codeowners": ["@yacq"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/yacq/ferguson-fs2pg",
+  "integration_type": "hub",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/yacq/ferguson-fs2pg/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

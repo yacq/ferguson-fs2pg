@@ -1,0 +1,48 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Ferguson FS2PG",
+        "description": "Home Assistant będzie nasłuchiwał połączeń od gniazdek. Ruch gniazdka trzeba przekierować na ten port na routerze.",
+        "data": {
+          "port": "Port nasłuchu"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Integracja jest już skonfigurowana. Możliwa jest tylko jedna instancja."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Dozwolone adresy",
+        "description": "Tylko te adresy mogą łączyć się jako gniazdko. Puste pole oznacza dowolny adres. Jeśli router ma regułę masquerade, gniazdko łączy się z adresu routera: wpisz właśnie ten adres.",
+        "data": {
+          "allowed_sources": "Adresy IP lub sieci (oddzielone przecinkami)"
+        },
+        "data_description": {
+          "allowed_sources": "Na przykład 192.0.2.21 albo 192.0.2.0/24."
+        }
+      }
+    },
+    "error": {
+      "invalid_source": "To nie jest poprawny adres IP ani sieć."
+    }
+  },
+  "entity": {
+    "text": {
+      "plug_name": {
+        "name": "Nazwa w gniazdku"
+      }
+    },
+    "sensor": {
+      "energy_counter": {
+        "name": "Licznik energii (gniazdko)"
+      },
+      "energy_total": {
+        "name": "Energia całkowita"
+      }
+    }
+  }
+}

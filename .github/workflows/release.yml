@@ -1,0 +1,49 @@
+name: Release
+
+# Push an annotated tag vX.Y.Z whose version matches manifest.json; the tag
+# message becomes the release notes that HACS shows.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check that the tag matches manifest.json
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version=$(python3 -c "import json; print(json.load(open('custom_components/ferguson_fs2pg/manifest.json'))['version'])")
+          echo "tag=$tag manifest=$version"
+          test "$tag" = "$version"
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - name: Protocol tests
+        run: python -m unittest discover -s tests
+      - name: Build ferguson_fs2pg.zip
+        # HACS (zip_release in hacs.json) unpacks it straight into
+        # custom_components/ferguson_fs2pg/, so the files sit at the zip's root.
+        run: |
+          cp LICENSE custom_components/ferguson_fs2pg/
+          cd custom_components/ferguson_fs2pg
+          zip -r -X ../../ferguson_fs2pg.zip . -x '__pycache__/*' '*.pyc'
+          cd ../..
+          unzip -l ferguson_fs2pg.zip
+          unzip -l ferguson_fs2pg.zip | grep -q ' manifest.json$'
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # actions/checkout may leave the tag lightweight; fetch the annotation
+          git fetch --force origin "refs/tags/${GITHUB_REF_NAME}:refs/tags/${GITHUB_REF_NAME}"
+          git tag -l --format='%(contents)' "$GITHUB_REF_NAME" > notes.md
+          gh release create "$GITHUB_REF_NAME" ferguson_fs2pg.zip \
+            --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag

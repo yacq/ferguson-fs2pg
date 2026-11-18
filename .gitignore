@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+# raw captures contain the account e-mail and the device key
+*.pcap
+*.pcapng
+# deploy key and local tool settings
+.ssh/
+.claude/settings.local.json
+# release archives are built, not versioned
+*.zip
+# local instructions for Claude Code
+CLAUDE.md
+logs_*.txt
+*.log

@@ -1,0 +1,48 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Ferguson FS2PG",
+        "description": "Home Assistant will listen for connections from the plugs. Redirect the plug's traffic to this port on your router.",
+        "data": {
+          "port": "Listening port"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Already configured. Only one instance is possible."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Allowed sources",
+        "description": "Only these addresses may connect as a plug. Leave empty to accept any address. With a masquerade rule on the router, the plug connects from the router's address: enter that one.",
+        "data": {
+          "allowed_sources": "IP addresses or networks (comma separated)"
+        },
+        "data_description": {
+          "allowed_sources": "For example 192.0.2.21 or 192.0.2.0/24."
+        }
+      }
+    },
+    "error": {
+      "invalid_source": "Not a valid IP address or network."
+    }
+  },
+  "entity": {
+    "text": {
+      "plug_name": {
+        "name": "Name in the plug"
+      }
+    },
+    "sensor": {
+      "energy_counter": {
+        "name": "Energy counter (plug)"
+      },
+      "energy_total": {
+        "name": "Energy total"
+      }
+    }
+  }
+}
