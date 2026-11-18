@@ -24,7 +24,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import ExtraStoredData, RestoreEntity
 
 from . import FergusonConfigEntry
-from .const import SIGNAL_NEW_PLUG
+from .const import SIGNAL_NEW_PLUG, SIGNAL_RESET_ENERGY
 from .entity import FergusonEntity
 from .server import (
     OID_CURRENT,
@@ -170,6 +170,13 @@ class FergusonEnergyTotalSensor(FergusonEntity, SensorEntity, RestoreEntity):
                 self._total = EnergyTotal(total, last)
         self._feed()
         self.async_on_remove(self._plug.add_listener(self._handle_update))
+        self.async_on_remove(
+            async_dispatcher_connect(
+                self.hass,
+                f"{SIGNAL_RESET_ENERGY}_{self._plug.device_id}",
+                self._handle_reset,
+            )
+        )
 
     def _feed(self) -> None:
         if self._plug.energy is not None:
@@ -182,4 +189,10 @@ class FergusonEnergyTotalSensor(FergusonEntity, SensorEntity, RestoreEntity):
     @callback
     def _handle_update(self) -> None:
         self._feed()
+        self.async_write_ha_state()
+
+    @callback
+    def _handle_reset(self) -> None:
+        """Start from zero (the "Reset energy total" button)."""
+        self._total.reset()
         self.async_write_ha_state()

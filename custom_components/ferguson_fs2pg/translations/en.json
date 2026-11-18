@@ -31,6 +31,11 @@
     }
   },
   "entity": {
+    "button": {
+      "reset_energy_total": {
+        "name": "Reset energy total"
+      }
+    },
     "text": {
       "plug_name": {
         "name": "Name in the plug"

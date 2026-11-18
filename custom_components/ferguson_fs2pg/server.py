@@ -205,6 +205,18 @@ class EnergyTotal:
         self.last = counter
         return self._add(added)
 
+    def reset(self) -> None:
+        """Start the total again from zero.
+
+        `last` is kept, so energy the counter already shows is not counted
+        again; only what is used from now on is added.
+        """
+        self.total = 0.0
+        if self._before_reset is not None:
+            # The counter has already reset, so the period whose final value
+            # is still to come ended before this reset: add nothing for it.
+            self._before_reset = float("inf")
+
     def close(self, final: float) -> bool:
         """Feed the final value of a period; return True if the total changed."""
         if self._before_reset is not None:

@@ -20,6 +20,10 @@ current and energy, over days of continuous use. See
   period's energy and resets the counter. The integration sums the periods
   into a total that survives restarts. The raw counter is a diagnostic
   sensor, "Energy counter (plug)".
+- Button (configuration): "Reset energy total" starts the total again from
+  zero, for example when a different appliance is plugged in. Nothing is
+  sent to the plug. Past statistics stay; the Energy dashboard treats the
+  drop as a meter reset.
 - Text (configuration): the name stored in the plug (at first, the one
   given in the Ferguson Home app). Changing it renames the plug itself, up to 118 bytes
   (UTF-8); the plug keeps the name across power cycles. The Ferguson Home

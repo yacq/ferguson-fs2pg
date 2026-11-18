@@ -18,7 +18,7 @@ from .const import (
 )
 from .server import FergusonServer, Plug
 
-PLATFORMS = [Platform.SENSOR, Platform.SWITCH, Platform.TEXT]
+PLATFORMS = [Platform.BUTTON, Platform.SENSOR, Platform.SWITCH, Platform.TEXT]
 
 type FergusonConfigEntry = ConfigEntry[FergusonServer]
 

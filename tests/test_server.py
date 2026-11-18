@@ -152,6 +152,23 @@ class EnergyTotalTest(unittest.TestCase):
         self.assertTrue(total.update(0.021))
         self.assertAlmostEqual(total.total, 0.021)
 
+    def test_reset_counts_only_what_comes_after(self):
+        total = server.EnergyTotal()
+        self.feed(total, [0.0, 0.074, 0.132])
+        total.reset()
+        self.assertEqual((total.total, total.last), (0.0, 0.132))
+        # The rest of the period, then the next one.
+        self.feed(total, [("close", 0.177), 0.0, 0.035])
+        self.assertAlmostEqual(total.total, 0.08)
+
+    def test_reset_between_reset_and_period_end(self):
+        # Reset pressed after the counter's reset but before the notification.
+        total = server.EnergyTotal()
+        self.feed(total, [0.0, 0.132, 0.0])
+        total.reset()
+        self.feed(total, [("close", 0.177), 0.035])
+        self.assertAlmostEqual(total.total, 0.035)
+
     def test_continues_after_restart(self):
         # Restored state; the plug kept counting while Home Assistant was down.
         total = server.EnergyTotal(total=2.5, last=0.071)

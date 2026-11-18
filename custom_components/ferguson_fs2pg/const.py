@@ -8,3 +8,4 @@ CONF_ALLOWED_SOURCES = "allowed_sources"  # entry.options: list of IPs/networks
 DEFAULT_PORT = 23778
 
 SIGNAL_NEW_PLUG = f"{DOMAIN}_new_plug"
+SIGNAL_RESET_ENERGY = f"{DOMAIN}_reset_energy"  # + "_<device ID>"

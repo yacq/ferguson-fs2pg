@@ -9,13 +9,15 @@
   connection, state from polls and notifications, switch, entities
   unavailable on disconnect and restored after a restart, device name and MAC
   in the device registry, options flow for allowed sources, energy total
-  across period ends and restarts, no deprecation warnings.
+  across period ends and restarts, the "Reset energy total" button, no
+  deprecation warnings.
 - Real plug (November 2026), installed from HACS:
   - connects through dst-nat (plus masquerade, see README); the plug accepts
     `SID` = `homeassistant` and `TEID` = `7246`;
   - relay on/off from Home Assistant, the physical button reflected at once;
   - power, current, voltage and energy mapping confirmed under load;
-  - the connection stayed up for more than a day;
+  - the connection stayed up for more than a day, and the plug is back
+    within seconds after a Home Assistant restart;
   - "Energy total" over a day matched a Shelly plug connected in series; the
     small difference matched the difference in measured power;
   - rename: the plug keeps a name set from Home Assistant across a power
@@ -24,8 +26,7 @@
 
 ## To verify on real hardware
 
-1. Reconnect after a Home Assistant restart: how long until the plug is back.
-2. What the "electricity" notification sent right after connecting reports
+1. What the "electricity" notification sent right after connecting reports
    (ignored for now): the last period's value again, or a period that ended
    while the plug was offline? Test: restart Home Assistant mid-period, and
    once with the downtime spanning a period end, with debug logging on.
