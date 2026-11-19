@@ -4,8 +4,9 @@ Controls the Ferguson Smart Wi-Fi Plug FS2PG without the vendor cloud.
 
 The plug only ever talks to the vendor cloud (`app.ferguson.com.pl:23778`,
 plain unencrypted TCP). This integration runs a small TCP server inside Home
-Assistant that stands in for that cloud, and your router redirects the plug's
-connection to it. Nothing is changed on the plug itself.
+Assistant that stands in for that cloud; a local DNS entry or a NAT rule on
+your router sends the plug's connection to it. Nothing is changed on the plug
+itself.
 
 Tested with a real plug: on/off, the physical button, voltage, power,
 current and energy, over days of continuous use. See
@@ -56,7 +57,42 @@ Without HACS: download
 from the latest release, unpack it into
 `config/custom_components/ferguson_fs2pg/` and restart Home Assistant.
 
-## Router redirect (MikroTik example)
+## Sending the plug to Home Assistant
+
+The plug connects to `app.ferguson.com.pl`, port 23778. Point it at Home
+Assistant in one of two ways. In both, the Ferguson Home app can no longer
+reach the redirected plugs.
+
+| | DNS override | Destination NAT |
+|---|---|---|
+| Setup | one DNS entry | a NAT rule (plus masquerade in some networks) |
+| Affects | every device using that DNS server | only the plugs you list |
+| Vendor app for other devices | stops working | keeps working |
+
+The DNS override is the simpler choice once all your Ferguson plugs are in
+Home Assistant and you no longer need the vendor cloud. Use NAT to move
+single plugs, or to keep the cloud for other devices.
+
+### Option 1: DNS override
+
+In the DNS server your network hands out through DHCP, resolve
+`app.ferguson.com.pl` to the address of Home Assistant (`HA_IP`). The plug
+takes its DNS server from DHCP and looks the name up when it connects.
+
+- MikroTik (when the router is the DNS server):
+
+      /ip dns static add name=app.ferguson.com.pl address=HA_IP \
+          comment="Ferguson FS2PG -> Home Assistant"
+
+- Pi-hole: Local DNS → DNS Records. AdGuard Home: Filters → DNS rewrites.
+
+If the Home Assistant host has an address in the plugs' subnet, use that
+one, so the connection does not have to pass the router. The firewall must
+allow plug → `HA_IP:23778`. Then power-cycle the plug (it resolves the name
+when it connects); the device appears in Home Assistant after its first
+connection.
+
+### Option 2: destination NAT (MikroTik example)
 
 Replace `PLUG_IP` with the plug's address and `HA_IP` with the address of
 Home Assistant. Give the plug a static DHCP lease so the rule keeps matching.
@@ -67,9 +103,10 @@ Home Assistant. Give the plug a static DHCP lease so the rule keeps matching.
 
 The firewall must allow plug → `HA_IP:23778`. After adding the rule, unplug
 the plug and plug it back in (NAT only affects new connections). The device
-appears in Home Assistant after its first connection.
+appears in Home Assistant after its first connection. Any router that can do
+destination NAT works the same way.
 
-### When Home Assistant can reach the plug directly
+#### When Home Assistant can reach the plug directly
 
 If the Home Assistant host has any network interface in the plug's subnet
 (the same subnet, or a second interface), it answers the plug directly instead
@@ -91,19 +128,18 @@ Then remove the stale connections and power-cycle the plug:
 Home Assistant will log the router's address as the plug's peer; this is
 expected, the plug is identified by its login.
 
-Any router that can do destination NAT works the same way.
-
 ## Allowed sources (optional)
 
 By default the server accepts a plug from any address. To restrict it:
 Settings → Devices & services → Ferguson FS2PG → Configure, and enter the
-allowed IP addresses or networks, comma separated. With the masquerade rule
-above, the plug connects from the router's address, so enter that one. A
+allowed IP addresses or networks, comma separated. With a DNS override or
+plain NAT, enter the plugs' addresses; with the masquerade rule, the plug
+connects from the router's address, so enter that one. A
 refused connection is logged once per address as a warning.
 
 ## Going back to the vendor app
 
-Disable the NAT rule and power-cycle the plug.
+Remove the DNS entry or disable the NAT rule, then power-cycle the plug.
 
 ## Limitations
 

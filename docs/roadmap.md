@@ -12,7 +12,8 @@
   across period ends and restarts, the "Reset energy total" button, no
   deprecation warnings.
 - Real plug (November 2026), installed from HACS:
-  - connects through dst-nat (plus masquerade, see README); the plug accepts
+  - connects through dst-nat (plus masquerade, see README) and through a
+    local DNS override of `app.ferguson.com.pl`; the plug accepts
     `SID` = `homeassistant` and `TEID` = `7246`;
   - relay on/off from Home Assistant, the physical button reflected at once;
   - power, current, voltage and energy mapping confirmed under load;
@@ -48,5 +49,3 @@ Enable debug logging while testing:
 
 - Diagnostics download (redacting the key) and a "last seen" sensor.
 - Options flow for the poll interval.
-- Alternative to dst-nat: a static DNS entry for `app.ferguson.com.pl`.
-  Simpler, but it also breaks the vendor app for every device on that DNS.

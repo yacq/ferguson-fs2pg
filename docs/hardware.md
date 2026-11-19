@@ -74,7 +74,8 @@ Logging was then turned off again (`AT+LOGSW=off`, confirmed `off`).
   subnet. The Home Assistant host also had an interface in the plug's subnet,
   so it answered the plug directly and the connection failed until a
   masquerade rule was added (README, "When Home Assistant can reach the plug
-  directly"). The redirect rules are in the README.
+  directly"). A local DNS override of `app.ferguson.com.pl` works as well.
+  Both are described in the README.
 
 Capturing traffic on a MikroTik (replace PLUG_IP):
 
