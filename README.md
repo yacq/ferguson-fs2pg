@@ -59,7 +59,7 @@ The integration is a hub: one entry serves all plugs, and each plug appears
 as a device on its own once its traffic is redirected (see below). There is
 nothing to add per plug.
 
-Without HACS: download
+Without the Marketplace or HACS: download
 [ferguson_fs2pg.zip](https://github.com/yacq/ferguson-fs2pg/releases/latest/download/ferguson_fs2pg.zip)
 from the latest release, unpack it into
 `config/custom_components/ferguson_fs2pg/` and restart Home Assistant.
