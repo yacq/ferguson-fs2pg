@@ -42,11 +42,18 @@ helper on the power sensor is an alternative.
 
 Requires Home Assistant 2026.3 or newer.
 
-1. HACS → Custom repositories → `https://github.com/yacq/ferguson-fs2pg`,
-   type: Integration.
+1. Add the repository:
+   - Home Assistant 2026.11 or newer (Marketplace): Settings → Marketplace →
+     Add from link → `yacq/ferguson-fs2pg` → Add. The Marketplace asks you
+     to connect a GitHub account the first time.
+   - Home Assistant 2026.3 to 2026.10 (HACS): HACS → Custom repositories →
+     `https://github.com/yacq/ferguson-fs2pg`, type: Integration.
 2. Install "Ferguson FS2PG (local)" and restart Home Assistant.
 3. Settings → Devices & services → Add integration → "Ferguson FS2PG".
    Keep the default port 23778.
+
+An installation from HACS moves to the Marketplace by itself when Home
+Assistant is updated to 2026.11, and keeps receiving updates.
 
 The integration is a hub: one entry serves all plugs, and each plug appears
 as a device on its own once its traffic is redirected (see below). There is
@@ -206,9 +213,9 @@ leaves correction to Home Assistant.
 
 Releasing: bump `version` in `manifest.json`, commit, then push an annotated
 tag `vX.Y.Z` whose message is the release notes. The Release workflow checks
-the version, runs the tests and publishes the GitHub release that HACS shows,
-with `ferguson_fs2pg.zip` (the integration folder) attached; HACS installs
-from that zip.
+the version, runs the tests and publishes the GitHub release that the
+Marketplace and HACS show, with `ferguson_fs2pg.zip` (the integration folder)
+attached; both install from that zip.
 
 Not affiliated with Ferguson or Treesat.
 

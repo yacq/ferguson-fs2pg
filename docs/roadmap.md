@@ -11,7 +11,8 @@
   in the device registry, options flow for allowed sources, energy total
   across period ends and restarts, the "Reset energy total" button, no
   deprecation warnings.
-- Real plug (November 2026), installed from HACS:
+- Real plug (November 2026), installed from HACS (the Marketplace in
+  Home Assistant 2026.11 uses the same repository layout):
   - connects through dst-nat (plus masquerade, see README) and through a
     local DNS override of `app.ferguson.com.pl`; the plug accepts
     `SID` = `homeassistant` and `TEID` = `7246`;
